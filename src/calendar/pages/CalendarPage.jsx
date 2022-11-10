@@ -2,12 +2,12 @@ import { Calendar } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { addHours } from 'date-fns';
 
-import { Navbar } from '../';
+import { Navbar, CalendarEvent } from '../';
 import { localizer, gerMessageES } from '../../helpers';
 
 const myEventsList = [
   {
-    title: 'Cumple años de jefe',
+    title: 'Cumple años del jefe',
     notes: 'Hay que comprar el pastel',
     start: new Date(), //
     end: addHours(new Date(), 2),
@@ -21,7 +21,6 @@ const myEventsList = [
 
 export const CalendarPage = () => {
   const eventStyleGetter = (event, start, end, isSelected) => {
-    console.log({event, end, start, isSelected})
 
     const style = {
       backgroundColor: '#347CF7',
@@ -48,6 +47,9 @@ export const CalendarPage = () => {
         style={{ height: 'calc(100vh - 80px)' }}
         messages={gerMessageES()}
         eventPropGetter={eventStyleGetter}
+        components={{
+          event: CalendarEvent
+        }}
       />
     </>
   );
