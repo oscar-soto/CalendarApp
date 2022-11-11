@@ -27,8 +27,8 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
-  const {isDateModalOpen, closeDateModal} = useUiStore()
-  const {activeEvent} = useCalendarStore()
+  const { isDateModalOpen, closeDateModal } = useUiStore();
+  const { activeEvent, startSavingEvent } = useCalendarStore();
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -39,21 +39,16 @@ export const CalendarModal = () => {
   });
 
   const titleClass = useMemo(() => {
-    if(!formSubmitted) return '';
+    if (!formSubmitted) return '';
 
-    return (formValues.title.length > 0)
-      ? ''
-      : 'is-invalid'
-
-  }, [formValues.title, formSubmitted])
+    return formValues.title.length > 0 ? '' : 'is-invalid';
+  }, [formValues.title, formSubmitted]);
 
   useEffect(() => {
-    if(activeEvent !== null) {
-      setFormValues({...activeEvent})
+    if (activeEvent !== null) {
+      setFormValues({ ...activeEvent });
     }
-    
-  }, [activeEvent])
-  
+  }, [activeEvent]);
 
   const onInputChanged = ({ target }) => {
     setFormValues({
@@ -70,10 +65,10 @@ export const CalendarModal = () => {
   };
 
   const oncloseModal = () => {
-    closeDateModal()
+    closeDateModal();
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     setFormSubmitted(true);
 
@@ -86,14 +81,14 @@ export const CalendarModal = () => {
     if (formValues.title.length <= 0) return;
 
     console.log(formValues);
-    /*
-      TODO:
-      Remover errores en pantalla
-      cerrar modal
-    */
+
+    // TODO:
+    await startSavingEvent(formValues);
+    closeDateModal();
+    setFormSubmitted(false)
   };
 
-  /***** VISTA *****/ 
+  /***** VISTA *****/
   return (
     <Modal
       isOpen={isDateModalOpen}
