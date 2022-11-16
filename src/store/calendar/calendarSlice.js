@@ -59,10 +59,10 @@ export const calendarSlice = createSlice({
         }
       });
     },
-    onDesactiveEvent: (state) => {
-      if (state.activeEvent) {
-        state.activeEvent = null;
-      }
+    onLogoutCalendar: (state) => {
+      state.isLoadingEvenets = true;
+      state.events = []
+      state.activeEvent = null;
     }
   },
 });
@@ -74,5 +74,5 @@ export const {
   onUpdateEvent,
   onDeleteEvent,
   onLoadEvent,
-  onDesactiveEvent
+  onLogoutCalendar
 } = calendarSlice.actions;
