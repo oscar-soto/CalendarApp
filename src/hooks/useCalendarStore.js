@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import { calendarApi } from '../api';
 import { convertEventsToDateEvents } from '../helpers';
 import {
@@ -22,14 +23,20 @@ export const useCalendarStore = () => {
     // TODO: Llegar al backend
 
     // all right
-    if (calendarEvent._id) {
-      // update
-      dispatch(onUpdateEvent({ ...calendarEvent }));
-    } else {
-      // build
-      const { data } = await calendarApi.post('/events', calendarEvent);
+    try {
+      // Update
+      if (calendarEvent.id) {
+        await calendarApi.put(`/events/${calendarEvent.id}`, calendarEvent);
+        dispatch(onUpdateEvent({ ...calendarEvent }));
+        return;
+      }
 
+      // Crete
+      const { data } = await calendarApi.post('/events', calendarEvent);
       dispatch(onAddNewEvent({ ...calendarEvent, id: data.event.id, user }));
+    } catch (error) {
+      console.log(error);
+      Swal.fire('Error al guardar', error.response.data?.msg, 'error');
     }
   };
 
@@ -42,8 +49,8 @@ export const useCalendarStore = () => {
     try {
       const { data } = await calendarApi.get('/events');
       const events = convertEventsToDateEvents(data.event);
-      dispatch(onLoadEvent(events))
-      
+      dispatch(onLoadEvent(events));
+
       // console.log(events)
     } catch (error) {
       console.log('Error cargando eventos');
