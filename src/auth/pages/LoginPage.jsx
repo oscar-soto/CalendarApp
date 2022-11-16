@@ -16,7 +16,7 @@ const registerFormFields = {
 };
 
 export const LoginPage = () => {
-  const {startLogin, errorMessage} = useAuthStore()
+  const { startLogin, startRegister, errorMessage } = useAuthStore();
 
   const {
     loginEmail,
@@ -34,26 +34,40 @@ export const LoginPage = () => {
 
   const loginSubmit = (e) => {
     e.preventDefault();
-    startLogin({ email:loginEmail, password:loginPassword })
+    startLogin({ email: loginEmail, password: loginPassword });
   };
 
   const registerSubmit = (e) => {
     e.preventDefault();
 
-    console.log({
-      registerEmail,
-      registerName,
-      registerPassword,
-      registerConfirmPassword,
+    if (registerPassword <= 6) {
+      return Swal.fire(
+        'Error en registro',
+        'Contraseña debe tener minimo 6 caracteres',
+        'error'
+      );
+    }
+
+    if (registerPassword !== registerConfirmPassword) {
+      return Swal.fire(
+        'Error en registro',
+        'Contraseñas no son iguales',
+        'error'
+      );
+    }
+
+    startRegister({
+      email: registerEmail,
+      name: registerName,
+      password: registerPassword,
     });
   };
 
   useEffect(() => {
-    if(errorMessage !== undefined) {
-      Swal.fire('Error en la autenticación', errorMessage, 'error')
+    if (errorMessage !== undefined) {
+      Swal.fire('Error en la autenticación', errorMessage, 'error');
     }
-  }, [errorMessage])
-  
+  }, [errorMessage]);
 
   return (
     <div className="container login-container">
