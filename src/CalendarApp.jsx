@@ -7,11 +7,11 @@ export const CalendarApp = () => {
   return (
     <>
       <Provider store={store}>
-        {/* <BrowserRouter> */}
-        <HashRouter>
+        <BrowserRouter>
+        {/* <HashRouter> */}
           <AppRouter />
-        </HashRouter>
-        {/* </BrowserRouter> */}
+        {/* </HashRouter> */}
+        </BrowserRouter>
       </Provider>
     </>
   );
