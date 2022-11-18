@@ -17,7 +17,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const calendarSlice = createSlice({
   name: 'calendar',
   initialState: {
-    isLoadingEvenets: true,
+    isLoadingEvents: true,
     events: [
       // tempEvent
     ],
@@ -49,7 +49,7 @@ export const calendarSlice = createSlice({
       }
     },
     onLoadEvent: (state, { payload = [] }) => {
-      state.isLoadingEvenets = false;
+      state.isLoadingEvents = false;
       // state.events = payload;
       payload.forEach((event) => {
         const exists = state.events.some((dbEvent) => dbEvent.id === event.id);
@@ -60,7 +60,7 @@ export const calendarSlice = createSlice({
       });
     },
     onLogoutCalendar: (state) => {
-      state.isLoadingEvenets = true;
+      state.isLoadingEvents = true;
       state.events = []
       state.activeEvent = null;
     }
